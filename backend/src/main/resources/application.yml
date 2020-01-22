@@ -1,0 +1,133 @@
+server:
+  port: 8848
+
+spring:
+  datasource:
+    dynamic:
+      # 是否开启SQL日志输出，生产环境关闭(有性能损耗)
+      p6spy: true
+
+      hikari:
+        connection-timeout: 30000
+        max-lifetime: 1800000
+        max-pool-size: 15
+        min-idle: 5
+        connection-test-query: SELECT 1 FROM DUAL
+        pool-name: HikariCP
+
+      # 默认数据源
+      primary: primary
+      datasource:
+        # 数据源1: primary
+        primary:
+          username: root
+          password: 123456
+          driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+          url: jdbc:p6spy:mysql://127.0.0.1:3306/ezshare?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+
+        # 数据源2: test
+        test:
+          username: root
+          password: 123456
+          driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+          url: jdbc:p6spy:mysql://127.0.0.1:3306/ezshare_test?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+
+  # 基于接口的还是基于类的代理被创建
+  # true则是基于类的代理将起作用（需要cglib库）
+  # false或者省略这个属性，则标准的JDK 基于接口的代理将起作用
+  aop:
+    proxy-target-class: true
+
+  # Spring 配置内容编码(ValidationMessages.properties)
+  messages:
+    encoding: utf-8
+
+  # Date类默认返回
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  # Redis缓存配置
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    jedis:
+      pool:
+        min-idle: 8
+        max-idle: 500
+        max-active: 2000
+        max-wait: 10000
+    timeout: 0
+
+  # servlet配置, 最大支持1T处理
+  servlet:
+    multipart:
+      max-file-size: 1099511627776
+      max-request-size: 1099511627776
+
+  # 关闭Spring的banner显示
+  main:
+    banner-mode: off
+
+# 日志配置
+logging:
+  config: classpath:logback.xml
+
+# Spring Actuator配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ['httptrace', 'metrics', 'caches']
+
+# mybatis-plus 设置
+mybatis-plus:
+  type-aliases-package: top.jasonkayzk.ezshare.system.entity,top.jasonkayzk.ezshare.job.entity,top.jasonkayzk.ezshare.file.entity
+  mapper-locations: classpath:mapper/*/*.xml
+  configuration:
+    jdbc-type-for-null: null
+  global-config:
+    # 关闭mybatis-plus的banner
+    banner: true
+
+# Swagger相关配置
+swagger:
+  enabled: true
+  title: EZShare Application API
+  basePackage: top.jasonkayzk.ezshare
+  basePath=/**:
+  description: upload, download, share, file-sharing system
+  version: 1.0
+  author: Jasonkay
+  url: https://github.com/JasonkayZK/EZShare
+  email: 271226192@qq.com
+  license: Apache 2.0
+  licenseUrl: https://www.apache.org/licenses/LICENSE-2.0.html
+  exclude-path: error, /ops/**
+
+shiro:
+  # 后端免认证接口url
+  anonUrl:
+    - /login
+    - /logout/**
+    - /regist
+    - /user/check/**
+    - /swagger-resources/**
+    - /webjars/**
+    - /v2/**
+    - /swagger-ui.html/**
+    - /favicon.ico
+  # token有效期，单位秒
+  jwtTimeOut: 3600
+
+# 项目自定义配置
+ezshare:
+  # 是否异步记录用户操作日志
+  openAopLog: true
+
+  # 单次最大批量入库数量
+  max:
+    batch:
+      insert:
+        num: 2000
