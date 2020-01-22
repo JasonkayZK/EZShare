@@ -169,8 +169,8 @@ CREATE TABLE `t_dict`
     `dict_value`  varchar(100) NOT NULL COMMENT '值',
     `field_name`  varchar(100) NOT NULL COMMENT '字段名称',
     `table_name`  varchar(100) NOT NULL COMMENT '表名',
-    `create_time` datetime default CURRENT_TIMESTAMP comment '创建时间',
-    `modify_time` datetime default null comment '修改时间',
+    `create_time` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
+    `modify_time` datetime              default null comment '修改时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
@@ -186,11 +186,11 @@ CREATE TABLE `t_job`
     `id`          bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '任务id',
     `bean_name`   varchar(100) NOT NULL COMMENT 'spring bean名称',
     `method_name` varchar(100) NOT NULL COMMENT '方法名',
-    `params`      varchar(200) DEFAULT NULL COMMENT '参数',
+    `params`      varchar(200)          DEFAULT NULL COMMENT '参数',
     `cron_exp`    varchar(100) NOT NULL COMMENT 'cron表达式',
     `status`      char(1)      NOT NULL COMMENT '任务状态 0: 正常 1: 暂停',
-    `remark`      varchar(200) DEFAULT NULL COMMENT '备注',
-    `create_time` datetime     DEFAULT NULL COMMENT '创建时间',
+    `remark`      varchar(200)          DEFAULT NULL COMMENT '备注',
+    `create_time` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
@@ -283,9 +283,9 @@ CREATE TABLE `t_role`
 (
     `id`          bigint(20)  NOT NULL AUTO_INCREMENT COMMENT '角色ID',
     `name`        varchar(10) NOT NULL COMMENT '角色名称',
-    `remark`      varchar(100) DEFAULT NULL COMMENT '角色描述',
-    `create_time` datetime    NOT NULL COMMENT '创建时间',
-    `modify_time` datetime     DEFAULT NULL COMMENT '修改时间',
+    `remark`      varchar(100)         DEFAULT NULL COMMENT '角色描述',
+    `create_time` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `modify_time` datetime             DEFAULT NULL COMMENT '修改时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 3
@@ -397,6 +397,8 @@ CREATE TABLE `t_file_category`
     UNIQUE INDEX `u_name` (`name` ASC)
 )
     ENGINE = InnoDB
+    DEFAULT CHARSET = utf8
+    ROW_FORMAT = DYNAMIC
     COMMENT = '文件分类';
 
 
@@ -438,7 +440,35 @@ CREATE TABLE `t_file`
             ON UPDATE NO ACTION
 )
     ENGINE = InnoDB
+    DEFAULT CHARSET = utf8
+    ROW_FORMAT = DYNAMIC
     COMMENT = '文件列表';
+
+
+-- -----------------------------------------------------
+-- Table structure for t_file_auth
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `t_file_auth`;
+CREATE TABLE `t_file_auth`
+(
+    `id`             BIGINT(10) NOT NULL AUTO_INCREMENT COMMENT '编号',
+    `role_id`        BIGINT(20) NOT NULL COMMENT '角色Id',
+    `view_perms`     CHAR(1)    NOT NULL COMMENT '查看权限: 0游客不允许 1游客允许 2用户允许 3会员查看',
+    `download_perms` CHAR(1)    NOT NULL COMMENT '下载权限: 0游客不允许 1游客下载 2用户允许 3会员下载',
+    `create_time`    datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `modify_time`    datetime            DEFAULT NULL COMMENT '创建时间',
+    PRIMARY KEY (`id`) USING BTREE,
+    INDEX `fk_role_file_auth_idx` (`role_id` ASC),
+    CONSTRAINT `fk_role_file_auth_idx`
+        FOREIGN KEY (`role_id`)
+            REFERENCES `t_role` (`id`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION
+)
+    ENGINE = InnoDB
+    DEFAULT CHARSET = utf8
+    ROW_FORMAT = DYNAMIC
+    COMMENT '文件权限表';
 
 
 -- -----------------------------------------------------
@@ -466,6 +496,8 @@ CREATE TABLE `t_file_download_log`
             ON UPDATE NO ACTION
 )
     ENGINE = InnoDB
+    DEFAULT CHARSET = utf8
+    ROW_FORMAT = DYNAMIC
     COMMENT = '下载历史表';
 
 SET SQL_MODE = @OLD_SQL_MODE;
