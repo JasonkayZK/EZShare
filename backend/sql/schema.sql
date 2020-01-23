@@ -165,7 +165,7 @@ DROP TABLE IF EXISTS `t_dict`;
 CREATE TABLE `t_dict`
 (
     `id`          bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '字典ID',
-    `dict_key`    bigint(20)   NOT NULL COMMENT '键',
+    `dict_key`    varchar(100) NOT NULL COMMENT '键',
     `dict_value`  varchar(100) NOT NULL COMMENT '值',
     `field_name`  varchar(100) NOT NULL COMMENT '字段名称',
     `table_name`  varchar(100) NOT NULL COMMENT '表名',
@@ -409,7 +409,7 @@ DROP TABLE IF EXISTS `t_file`;
 CREATE TABLE `t_file`
 (
     `id`             BIGINT(20)    NOT NULL AUTO_INCREMENT COMMENT '编号',
-    `name`           VARCHAR(256)  NULL     DEFAULT '' COMMENT '文件名',
+    `name`           VARCHAR(256)  NOT NULL DEFAULT '' COMMENT '文件名',
     `suffix`         VARCHAR(16)   NOT NULL DEFAULT '' COMMENT '文件后缀',
     `local_url`      VARCHAR(1024) NOT NULL DEFAULT '' COMMENT '本地路径',
     `visit_url`      VARCHAR(1024) NOT NULL DEFAULT '' COMMENT '客户端访问路径',
@@ -456,7 +456,7 @@ CREATE TABLE `t_file_auth`
     `view_perms`     CHAR(1)    NOT NULL COMMENT '查看权限: 0游客不允许 1游客允许 2用户允许 3会员查看',
     `download_perms` CHAR(1)    NOT NULL COMMENT '下载权限: 0游客不允许 1游客下载 2用户允许 3会员下载',
     `create_time`    datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `modify_time`    datetime            DEFAULT NULL COMMENT '创建时间',
+    `modify_time`    datetime            DEFAULT NULL COMMENT '修改时间',
     PRIMARY KEY (`id`) USING BTREE,
     INDEX `fk_role_file_auth_idx` (`role_id` ASC),
     CONSTRAINT `fk_role_file_auth_idx`
