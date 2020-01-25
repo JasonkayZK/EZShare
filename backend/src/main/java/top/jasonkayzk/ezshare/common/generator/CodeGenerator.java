@@ -56,6 +56,11 @@ public class CodeGenerator {
     private static final String XML_MAPPER_TEMPLATE_PATH = "generator/templates/mapper.xml";
 
     /**
+     * 表前缀(去掉)
+     */
+    private static final String TABLE_PREFIX = "t_";
+
+    /**
      * mapper文件模板
      */
     private static final String MAPPER_TEMPLATE_PATH = "generator/templates/mapper.java";
@@ -123,9 +128,11 @@ public class CodeGenerator {
         strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
         strategy.setInclude(scanner());
-        strategy.setSuperEntityColumns("id");
+        // 加入则不生成id列
+        // strategy.setSuperEntityColumns("id");
         strategy.setControllerMappingHyphenStyle(true);
-        strategy.setTablePrefix(packageConfig.getModuleName() + "_");
+        // 去掉表中前缀
+        strategy.setTablePrefix(TABLE_PREFIX);
         generator.setStrategy(strategy);
         generator.setTemplateEngine(new FreemarkerTemplateEngine());
         generator.execute();
@@ -135,7 +142,7 @@ public class CodeGenerator {
     private static String[] scanner() {
         Scanner scanner = new Scanner(System.in);
         System.out.println(("请输入表名(多个表使用空格分开)" + "："));
-        // t_dict t_file t_file_category t_file_download_log t_job t_job_log t_log t_login_log t_menu t_role t_role_menu t_user t_user_config t_user_role t_file_auth
+        // t_dict t_file t_file_category t_file_download_log t_job t_job_log t_log t_login_log t_menu t_role t_role_menu t_user t_user_config t_user_role t_file_auth t_test
         if (scanner.hasNextLine()) {
             String ipt = scanner.nextLine();
             if (StringUtils.isNotBlank(ipt)) {

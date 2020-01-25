@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
+import com.wuwenze.poi.annotation.Excel;
 import com.wuwenze.poi.annotation.ExcelField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,6 +24,7 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("t_dict")
+@Excel("应用字典表")
 public class Dict implements Serializable {
 
     private static final long serialVersionUID = 285231985684474002L;
