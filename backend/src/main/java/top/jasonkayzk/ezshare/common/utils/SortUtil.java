@@ -1,4 +1,4 @@
-package top.jasonkayzk.ezshare.common;
+package top.jasonkayzk.ezshare.common.utils;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;

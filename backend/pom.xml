@@ -33,6 +33,7 @@
         <jwt.version>3.9.0</jwt.version>
         <excel-kit.version>2.0.72</excel-kit.version>
         <guava.version>28.2-jre</guava.version>
+        <json-path-assert.version>2.2.4</json-path-assert.version>
     </properties>
 
     <dependencies>
@@ -221,6 +222,17 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${swagger.ui}</version>
         </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.5.22</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-models</artifactId>
+            <version>1.5.22</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

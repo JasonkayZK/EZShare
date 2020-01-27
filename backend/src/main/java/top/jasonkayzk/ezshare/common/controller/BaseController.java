@@ -2,6 +2,7 @@ package top.jasonkayzk.ezshare.common.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
