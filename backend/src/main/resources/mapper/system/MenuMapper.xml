@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.jasonkayzk.ezshare.system.dao.mapper.MenuMapper">
+    <resultMap id="menu" type="top.jasonkayzk.ezshare.system.entity.Menu">
+        <id column="ID" jdbcType="DECIMAL" property="id"/>
+        <result column="PARENT_ID" jdbcType="DECIMAL" property="parentId"/>
+        <result column="NAME" jdbcType="VARCHAR" property="name"/>
+        <result column="PATH" jdbcType="VARCHAR" property="path"/>
+        <result column="COMPONENT" jdbcType="VARCHAR" property="component"/>
+        <result column="PERMS" jdbcType="VARCHAR" property="perms"/>
+        <result column="ICON" jdbcType="VARCHAR" property="icon"/>
+        <result column="TYPE" jdbcType="CHAR" property="type"/>
+        <result column="ORDER_NUM" jdbcType="DOUBLE" property="orderNum"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="MODIFY_TIME" jdbcType="TIMESTAMP" property="modifyTime"/>
+    </resultMap>
+
+    <select id="findUserPermissions" resultType="top.jasonkayzk.ezshare.system.entity.Menu">
+        SELECT DISTINCT m.perms
+        FROM t_role r
+                 left join t_user_role ur on (r.id = ur.role_id)
+                 left join t_user u on (u.id = ur.user_id)
+                 left join t_role_menu rm on (rm.role_id = r.id)
+                 left join t_menu m on (m.id = rm.menu_id)
+        WHERE u.username = #{userName}
+          AND m.perms IS NOT NULL
+          AND m.perms &lt;&gt; '';
+    </select>
+
+    <select id="findUserMenus" resultType="top.jasonkayzk.ezshare.system.entity.Menu">
+        select m.*
+        from t_menu m
+        where m.type &lt;&gt; 1
+          and m.id in (
+            select distinct rm.menu_id
+            from t_role_menu rm
+                     left join t_role r on (rm.role_id = r.id)
+                     left join t_user_role ur on (ur.role_id = r.id)
+                     left join t_user u on (u.id = ur.user_id)
+            where u.username = #{userName}
+        )
+        order by m.order_num
+    </select>
+
+    <select id="findUserIdsByMenuId" parameterType="string" resultType="string">
+        SELECT user_id
+        FROM t_user_role
+        WHERE role_id IN (
+            SELECT rm.role_id
+            FROM t_role_menu rm
+            WHERE rm.menu_id = #{menuId}
+        )
+    </select>
+
+
+</mapper>

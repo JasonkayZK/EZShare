@@ -5,7 +5,7 @@ import com.wuwenze.poi.ExcelKit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import top.jasonkayzk.ezshare.common.annotation.Log;
+import top.jasonkayzk.ezshare.common.annotation.LogAnnotation;
 import top.jasonkayzk.ezshare.common.controller.BaseController;
 import top.jasonkayzk.ezshare.common.entity.QueryRequest;
 import top.jasonkayzk.ezshare.common.exception.EzShareException;
@@ -47,7 +47,7 @@ public class DictController extends BaseController {
         return this.dictService.findDictById(id);
     }
 
-    @Log("新增字典")
+    @LogAnnotation("新增字典")
     @PostMapping
 //    @RequiresPermissions("dict:add")
     public void addDict(@Valid Dict dict) throws EzShareException {
@@ -60,7 +60,7 @@ public class DictController extends BaseController {
         }
     }
 
-    @Log("修改字典")
+    @LogAnnotation("修改字典")
     @PutMapping
 //    @RequiresPermissions("dict:update")
     public void updateDict(@Valid Dict dict) throws EzShareException {
@@ -73,7 +73,7 @@ public class DictController extends BaseController {
         }
     }
 
-    @Log("删除字典")
+    @LogAnnotation("删除字典")
     @DeleteMapping("/{dictIds}")
 //    @RequiresPermissions("dict:delete")
     public void deleteDicts(@NotBlank(message = "{required}") @PathVariable String dictIds) throws EzShareException {

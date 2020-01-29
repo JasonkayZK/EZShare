@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.jasonkayzk.ezshare.system.dao.mapper.UserMapper">
+        <resultMap id="BaseResultMap" type="top.jasonkayzk.ezshare.system.entity.User">
+            <id column="USER_ID" jdbcType="DECIMAL" property="id"/>
+            <result column="USERNAME" jdbcType="VARCHAR" property="username"/>
+            <result column="PASSWORD" jdbcType="VARCHAR" property="password"/>
+            <result column="EMAIL" jdbcType="VARCHAR" property="email"/>
+            <result column="MOBILE" jdbcType="VARCHAR" property="mobile"/>
+            <result column="STATUS" jdbcType="CHAR" property="status"/>
+            <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+            <result column="MODIFY_TIME" jdbcType="TIMESTAMP" property="modifyTime"/>
+            <result column="LAST_LOGIN_TIME" jdbcType="TIMESTAMP" property="lastLoginTime"/>
+            <result column="SEX" jdbcType="CHAR" property="sex"/>
+            <result column="AVATAR" jdbcType="VARCHAR" property="avatar"/>
+            <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+        </resultMap>
+
+    <select id="findUserDetail" resultType="top.jasonkayzk.ezshare.system.entity.User">
+        SELECT
+        u.id id,
+        u.username,
+        u.password,
+        u.email,
+        u.mobile,
+        u. STATUS,
+        u.create_time createTime,
+        u.sex,
+        u.AVATAR,
+        u.DESCRIPTION,
+        u.LAST_LOGIN_TIME lastLoginTime,
+        GROUP_CONCAT(r.id) roleId,
+        GROUP_CONCAT(r.name) roleName
+        FROM
+        t_user u
+        LEFT JOIN t_user_role ur ON (u.id = ur.user_id)
+        LEFT JOIN t_role r ON r.id = ur.role_id
+        WHERE 1 = 1
+        <if test="user.username != null and user.username != ''">
+            AND u.username = #{user.username}
+        </if>
+        <if test="user.createTimeFrom != null and user.createTimeFrom !=''">
+            And u.create_time &gt; #{user.createTimeFrom}
+        </if>
+        <if test="user.createTimeTo!= null and user.createTimeTo !=''">
+            And u.create_time &lt; #{user.createTimeTo}
+        </if>
+        <if test="user.sex != null and user.sex != ''">
+            AND u.sex = #{user.sex}
+        </if>
+        <if test="user.status != null and user.status != ''">
+            AND u.status = #{user.status}
+        </if>
+        group by u.username,
+        u.id,
+        u.password,
+        u.email,
+        u.mobile,
+        u. STATUS,
+        u.create_time,
+        u.sex,
+        u.AVATAR,
+        u.DESCRIPTION,
+        u.LAST_LOGIN_TIME
+    </select>
+
+    <select id="findDetail" resultType="top.jasonkayzk.ezshare.system.entity.User">
+        SELECT
+            u.id id,
+            u.username,
+            u.password,
+            u.email,
+            u.mobile,
+            u. STATUS,
+            u.create_time createTime,
+            u.sex,
+            u.AVATAR,
+            u.DESCRIPTION,
+            u.LAST_LOGIN_TIME lastLoginTime,
+            GROUP_CONCAT(r.id) roleId,
+            GROUP_CONCAT(r.name) roleName
+        FROM
+            t_user u
+                LEFT JOIN t_user_role ur ON (u.id = ur.user_id)
+                LEFT JOIN t_role r ON r.id = ur.role_id
+        WHERE  u.username = #{username}
+        group by u.username,
+                 u.id,
+                 u.password,
+                 u.email,
+                 u.mobile,
+                 u.STATUS,
+                 u.create_time,
+                 u.sex,
+                 u.AVATAR,
+                 u.DESCRIPTION,
+                 u.LAST_LOGIN_TIME
+    </select>
+
+
+</mapper>

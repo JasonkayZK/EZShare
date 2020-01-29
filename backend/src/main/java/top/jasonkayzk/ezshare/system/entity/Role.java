@@ -67,4 +67,6 @@ public class Role implements Serializable {
      */
     private transient String timeFrom;
     private transient String timeTo;
+    private transient String menuId;
+
 }
