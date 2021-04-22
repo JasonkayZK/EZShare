@@ -26,7 +26,7 @@
         <mybatis-plus.version>3.3.1</mybatis-plus.version>
         <mybatis.starter.version>2.1.1</mybatis.starter.version>
         <p6spy.version>3.8.7</p6spy.version>
-        <shiro.version>1.4.2</shiro.version>
+        <shiro.version>1.7.0</shiro.version>
         <ip2region.version>1.7.2</ip2region.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-fileupload.version>1.4</commons-fileupload.version>
